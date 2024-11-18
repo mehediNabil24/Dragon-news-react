@@ -1,6 +1,7 @@
 
 import { AiFillStar } from "react-icons/ai";
 import { FaShareAlt } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const NewsCard = (props={}) => {
     const {news} = props || {};
@@ -33,7 +34,7 @@ const NewsCard = (props={}) => {
           <span className="text-gray-600 ml-2">{rating.number} ({rating.badge})</span>
         </div>
         <div className="mt-4 flex items-center justify-between">
-          <button className="text-sm text-blue-500 hover:underline">Read More</button>
+          <Link to={`/news/${news._id}`} className="text-sm text-blue-500 hover:underline">Read More</Link>
           <div className="flex items-center space-x-2">
             <span className="text-gray-600">{total_view} views</span>
             <FaShareAlt className="text-gray-500 cursor-pointer" />

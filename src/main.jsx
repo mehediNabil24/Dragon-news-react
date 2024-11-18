@@ -8,6 +8,8 @@ import CategoryNews from "./Pages/CategoryNews.jsx";
 import AuthLayout from "./Layout/AuthLayout.jsx";
 import Login from "./Components/Login.jsx";
 import Register from "./Components/Register.jsx";
+import AuthProvider from "./Provider/AuthProvider.jsx";
+import NewsDetails from "./Components/NewsDetails.jsx";
 
 const router = createBrowserRouter([
   {
@@ -29,8 +31,10 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/news",
-    element: <h1>News</h1>,
+    path: "/news/:id",
+    element:<NewsDetails></NewsDetails>,
+    loader: ({params})=>
+      fetch(`https://openapi.programming-hero.com/api/news/${params.id}`),
   },
   {
     path: "/auth",
@@ -56,6 +60,6 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider><RouterProvider router={router} /></AuthProvider>
   </StrictMode>
 );
