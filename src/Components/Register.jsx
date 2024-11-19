@@ -1,14 +1,20 @@
-import { Link, } from 'react-router-dom';
+import { Link, useNavigate, } from 'react-router-dom';
 import { AuthContext } from '../Provider/AuthProvider';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
 const Register = () => {
-  const { createNewUser } = useContext(AuthContext);
+  const { createNewUser,setUser,updatedUserProfile } = useContext(AuthContext);
+  const [showError, setShowError] = useState('')
+  const navigate= useNavigate();
 
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const name = e.target.name.value;
+    if(name.length<5){
+        setShowError('Name must be more than 5')
+        return;
+    }
     const email = e.target.email.value;
     const photo = e.target.photo.value;
     const password = e.target.password.value;
@@ -18,10 +24,24 @@ const Register = () => {
     createNewUser(email, password)
       .then((result) => {
         console.log(result.user);
+        setUser(result.user)
+        updatedUserProfile({displayName: name, photoURL: photo})
+            .then(()=>{
+                navigate('/')
+
+
+            })
+            .catch(error=>{
+                console.log(error)
+            })
+
+            })
+        
+
        // Navigate to a specific route after success
-      })
+      
       .catch((error) => {
-        console.log('Error:', error.message);
+        setShowError(error.message)
       });
   };
 
@@ -42,6 +62,9 @@ const Register = () => {
               required
             />
           </div>
+          {
+            showError && <p className='text-red-500'>{showError}</p>
+          }
           <div className="form-control rounded-none">
             <label className="label">
               <span className="label-text">Photo</span>
